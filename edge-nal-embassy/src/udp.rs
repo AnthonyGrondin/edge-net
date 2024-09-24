@@ -163,7 +163,10 @@ impl<'d, D: Driver, const N: usize, const TX_SZ: usize, const RX_SZ: usize, cons
     for &UdpSocket<'d, D, N, TX_SZ, RX_SZ, M>
 {
     async fn readable(&mut self) -> Result<(), Self::Error> {
-        panic!("Not implemented yet")
+        while !self.socket.may_recv() {
+            embassy_futures::yield_now().await
+        }
+        Ok(())
     }
 }
 
@@ -231,7 +234,10 @@ impl<'d, D: Driver, const N: usize, const TX_SZ: usize, const RX_SZ: usize, cons
     for UdpSocket<'d, D, N, TX_SZ, RX_SZ, M>
 {
     async fn readable(&mut self) -> Result<(), Self::Error> {
-        panic!("Not implemented yet")
+        while !self.socket.may_recv() {
+            embassy_futures::yield_now().await
+        }
+        Ok(())
     }
 }
 
